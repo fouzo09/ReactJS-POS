@@ -21,7 +21,6 @@ const getCategorie = (req, res)=>{
 }
 
 const updateCategorie = (req, res)=>{
-    console.log(req.params.categorieID)
     Categorie.updateOne({_id: req.params.categorieID}, {"name": req.body.name},)
             .then(result => res.status(200).json(result))
             .catch(error => res.status(500).json({message : "Categorie non trouvée"}));
