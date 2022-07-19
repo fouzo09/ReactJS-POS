@@ -1,0 +1,15 @@
+.login--page{
+    height: 100vh;
+    background-color: #adb5bd;
+}
+
+.login--container{
+    background-color: #adb5bd;
+    height: 100vh;
+}
+
+.errors{
+    font-size: 12px;
+    font-weight: 100;
+    color: #e03131;
+}
