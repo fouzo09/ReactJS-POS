@@ -46,6 +46,7 @@ export default function Login() {
                         <Form.Control type="password" value={password} onChange={handlePassword} placeholder="Votre mot de passe" />
                         <span className='errors'>{(errors.password) ? errors.password : ''}</span>
                     </Form.Group>
+                    
                     <Button variant="dark" type="submit" className='btn--submit mb-3'>
                         Connexion
                     </Button>
