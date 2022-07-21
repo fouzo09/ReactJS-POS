@@ -1,38 +1,47 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect, useMemo, useState} from "react";
+import { Provider } from 'react-redux';
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, useState} from "react";
+import Products from "./pages/Products";
 import AuthContext from "./contexts/AuthContext";
 import { hasAuthenticated } from "./services/AuthApi";
 import AuthenticatedRoutes from "./components/AuthenticatedRoutes";
-import Products from "./pages/Products";
 
-const option = {
-  method: "GET",
-  credentials: "include",
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Credentials": true,
-  },
-};
+import { useSelector, useDispatch } from 'react-redux';
+import { SET_AUTH, GET_AUTH, LOGOUT } from './state/actions';
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setAuthenticated] = useState(hasAuthenticated());
-  
-  useEffect(()=>{
-    
-    const getUser = async ()=>{
-      const isLogged = await fetch('http://localhost:5000/api/1.0/auth-google/success', option);
-      setUser(isLogged);
-    };
 
-    getUser();
-  }, [])
+  const isLogged = useSelector((state)=> state.auth);
+  const dispatcher = useDispatch();
+
+  console.log(isLogged);
+
+  const authContext = useMemo(()=>({
+
+    login: (credentials)=>{
+       
+      dispatcher(SET_AUTH(credentials));   
+    },
+
+    isLogged: ()=>{
+      return isLogged;
+    },
+
+    getAuth: ()=>{
+
+    },   
+
+    getLogout: ()=>{
+
+    }
+    
+  }));
+  
   return (
     <>
-      <AuthContext.Provider value={{isAuthenticated}}>
+      <AuthContext.Provider value={authContext}>
         <BrowserRouter>
           <Routes>
             <Route exact path='/' element={<AuthenticatedRoutes/>}>
@@ -45,7 +54,6 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>
-       
     </>
   );
 }

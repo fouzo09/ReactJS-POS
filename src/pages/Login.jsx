@@ -1,7 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import '../assets/login.css';
+import AuthContext from '../contexts/AuthContext';
+import { option } from '../global';
 
 export default function Login() {
 
@@ -9,6 +13,17 @@ export default function Login() {
     const [pseudo, setPseudo] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
+    const { login } = useContext(AuthContext);
+
+
+    // useEffect(()=>{
+
+    //     const getUser = async ()=>{
+    //       const isLogged = await fetch('http://localhost:5000/api/1.0/auth-google/success', option);
+    //       setUser(isLogged);
+    //     };
+    //     getUser();
+    //   }, []);
 
     const handlePseudo = (event)=>{
         setPseudo(event.target.value);
@@ -29,7 +44,8 @@ export default function Login() {
 
     const handleLogin = (event)=>{
         event.preventDefault();
-        console.log(pseudo, password);
+        const credentials = {pseudo: pseudo, password: password};
+        login(credentials);
     }
 
     const authWithGoogle = (event)=>{
