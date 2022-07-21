@@ -13,3 +13,13 @@
     font-weight: 100;
     color: #e03131;
 }
+
+.btn--google{
+    background-color: #d34836;
+    border-color: #d34836;
+}
+
+.btn--google:hover{
+    background-color: #d34836;
+    border-color: #d34836;
+}
