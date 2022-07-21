@@ -31,6 +31,11 @@ export default function Login() {
         event.preventDefault();
         console.log(pseudo, password);
     }
+
+    const authWithGoogle = (event)=>{
+        event.preventDefault();
+        window.open('http://localhost:5000/api/1.0/auth-google', '_self');
+    }
   return (
     <Container fluid className='login--page'>
         <Row className='login--container d-flex align-items-center justify-content-center'>
@@ -47,9 +52,15 @@ export default function Login() {
                         <span className='errors'>{(errors.password) ? errors.password : ''}</span>
                     </Form.Group>
                     
-                    <Button variant="dark" type="submit" className='btn--submit mb-3'>
-                        Connexion
-                    </Button>
+                    <div className="d-grid">
+                        <Button variant="dark" type="submit" className='btn--submit mb-3'>
+                            Connexion
+                        </Button>
+                      
+                        <Button onClick={authWithGoogle}  className='btn--google mb-3'>
+                            Google
+                        </Button>
+                    </div>
                 </Form>                         
             </Col>
         </Row>
