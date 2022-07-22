@@ -1,12 +1,9 @@
-import React, { useRef, useContext } from 'react';
-import { useEffect } from 'react';
+import React, { useRef, useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import '../assets/login.css';
 import AuthContext from '../contexts/AuthContext';
-import { option } from '../global';
 
 export default function Login() {
 
@@ -14,18 +11,12 @@ export default function Login() {
     const [pseudo, setPseudo] = useState('mafouzdiallo@gmail.com');
     const [password, setPassword] = useState('123456');
     const [errors, setErrors] = useState({});
-    const { login } = useContext(AuthContext);
+    const { login, isLogged } = useContext(AuthContext);
     const navigate = useNavigate();
 
-
-    // useEffect(()=>{
-
-    //     const getUser = async ()=>{
-    //       const isLogged = await fetch('http://localhost:5000/api/1.0/auth-google/success', option);
-    //       setUser(isLogged);
-    //     };
-    //     getUser();
-    //   }, []);
+    useEffect(()=>{
+        
+    }, []);
 
     const handlePseudo = (event)=>{
         setPseudo(event.target.value);
@@ -46,20 +37,20 @@ export default function Login() {
 
     const handleLogin = async (event)=>{
         event.preventDefault();
-        const credentials = {email: pseudo, password: password};
-        await login(credentials);
-        navigate('/');
-    }
-
-    const authWithGoogle = (event)=>{
-        event.preventDefault();
-        window.open('http://localhost:5000/api/1.0/auth-google', '_self');
+        if(pseudo && password){
+            const credentials = {email: pseudo, password: password};
+            await login(credentials);
+            navigate('/');
+        }else{
+            setErrors({...errors, message: 'Tous les champs sont obligatoires.'});
+        }
     }
   return (
     <Container fluid className='login--page'>
         <Row className='login--container d-flex align-items-center justify-content-center'>
             <Col sm={4} style={{backgroundColor: '#fff', minHeight: '35%', borderRadius: '5px'}}>
                 <Form ref={loginRef}  onClick={handleLogin}>
+                    <span className='errors'>{(errors.message) ? errors.message : ''}</span>
                     <Form.Group className="mb-3 mt-3">
                         <Form.Label>Pseudo</Form.Label>
                         <Form.Control type="text" value={pseudo} onChange={handlePseudo} placeholder="Votre pseudo" />
@@ -74,10 +65,6 @@ export default function Login() {
                     <div className="d-grid">
                         <Button variant="dark" type="submit" className='btn--submit mb-3'>
                             Connexion
-                        </Button>
-                      
-                        <Button onClick={authWithGoogle}  className='btn--google mb-3'>
-                            Google
                         </Button>
                     </div>
                 </Form>                         

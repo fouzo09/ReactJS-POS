@@ -10,4 +10,12 @@ const AuthenticatedRoutes = ({path, component})=>{
   
 }
 
-export default AuthenticatedRoutes;
+const RedirectToAuthenticatedRoutes = ({path, component})=>{
+
+    const {isLogged} = useContext(AuthContext);
+
+    return isLogged() ? <Navigate to='/' /> : <Outlet />;
+  
+}
+
+export {AuthenticatedRoutes, RedirectToAuthenticatedRoutes};

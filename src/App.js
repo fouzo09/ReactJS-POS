@@ -5,8 +5,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import AuthContext from "./contexts/AuthContext";
-import { hasAuthenticated } from "./services/AuthApi";
-import AuthenticatedRoutes from "./components/AuthenticatedRoutes";
+import {AuthenticatedRoutes, RedirectToAuthenticatedRoutes } from "./components/AuthenticatedRoutes";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { SET_AUTH, GET_AUTH, LOGOUT } from './state/actions';
@@ -55,7 +54,9 @@ function App() {
             <Route exact path='/products' element={<AuthenticatedRoutes/>}>
               <Route exact path='/products' element={<Products/>}/>
             </Route>
-            <Route path="/login" element={<Login />} />
+            <Route exact path='/login' element={<RedirectToAuthenticatedRoutes/>}>
+              <Route path="/login" element={<Login />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>
