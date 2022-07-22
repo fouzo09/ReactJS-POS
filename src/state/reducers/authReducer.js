@@ -2,7 +2,6 @@
 const auth = {};
 
 export const authReducer = (state = auth, action)=>{
-    console.log(action.payload);
     switch(action.type){
         case 'SET_AUTH': {
             return state = action.payload;
@@ -17,7 +16,7 @@ export const authReducer = (state = auth, action)=>{
             return state = [];
         }
         default: {
-            return ((Object.keys(state)).length) ? true : false;;
+            return state;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState} from "react";
 import { Provider } from 'react-redux';
 import Login from "./pages/Login";
@@ -10,31 +10,36 @@ import AuthenticatedRoutes from "./components/AuthenticatedRoutes";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { SET_AUTH, GET_AUTH, LOGOUT } from './state/actions';
+import { AUTH_BASE_URL, option } from "./global";
 
 function App() {
 
-  const isLogged = useSelector((state)=> state.auth);
+  const auth = useSelector((state)=> state.auth);
   const dispatcher = useDispatch();
-
-  console.log(isLogged);
 
   const authContext = useMemo(()=>({
 
-    login: (credentials)=>{
-       
-      dispatcher(SET_AUTH(credentials));   
+    login: async (credentials)=>{
+
+      const response = await fetch(`${AUTH_BASE_URL}/1.0/auth`, option('POST', credentials)); 
+      if(response.status === 200){
+        const data = await response.json();
+        dispatcher(SET_AUTH(data));
+      }
     },
 
     isLogged: ()=>{
-      return isLogged;
+      return ((Object.keys(auth)).length) ? true : false;;
     },
 
     getAuth: ()=>{
-
+      return auth;
     },   
 
     getLogout: ()=>{
-
+      if(auth){
+        dispatcher(LOGOUT());
+      }
     }
     
   }));
