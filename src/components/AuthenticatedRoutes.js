@@ -4,9 +4,9 @@ import AuthContext from '../contexts/AuthContext';
 
 const AuthenticatedRoutes = ({path, component})=>{
 
-    const {isAuthenticated} = useContext(AuthContext);
+    const {isLogged} = useContext(AuthContext);
 
-    return isAuthenticated ? <Outlet /> : <Navigate to='/login' />;
+    return isLogged() ? <Outlet /> : <Navigate to='/login' />;
   
 }
 

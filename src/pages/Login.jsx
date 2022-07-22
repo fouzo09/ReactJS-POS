@@ -1,14 +1,31 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import '../assets/login.css';
+import AuthContext from '../contexts/AuthContext';
+import { option } from '../global';
 
 export default function Login() {
 
     const loginRef = useRef();
-    const [pseudo, setPseudo] = useState('');
-    const [password, setPassword] = useState('');
+    const [pseudo, setPseudo] = useState('mafouzdiallo@gmail.com');
+    const [password, setPassword] = useState('123456');
     const [errors, setErrors] = useState({});
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+
+    // useEffect(()=>{
+
+    //     const getUser = async ()=>{
+    //       const isLogged = await fetch('http://localhost:5000/api/1.0/auth-google/success', option);
+    //       setUser(isLogged);
+    //     };
+    //     getUser();
+    //   }, []);
 
     const handlePseudo = (event)=>{
         setPseudo(event.target.value);
@@ -27,9 +44,11 @@ export default function Login() {
         }
     }
 
-    const handleLogin = (event)=>{
+    const handleLogin = async (event)=>{
         event.preventDefault();
-        console.log(pseudo, password);
+        const credentials = {email: pseudo, password: password};
+        await login(credentials);
+        navigate('/');
     }
 
     const authWithGoogle = (event)=>{
